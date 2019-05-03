@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react'
-import { Col, Row } from 'react-bootstrap';
 
 export default class WinwheelSpinner extends Component {
     shouldComponentUpdate() {
@@ -10,45 +9,40 @@ export default class WinwheelSpinner extends Component {
 
     setupWinWheel = () => {
         return new Winwheel({
-            'outerRadius'     : 212,        // Set outer radius so wheel fits inside the background.
-            'innerRadius'     : 75,         // Make wheel hollow so segments don't go all way to center.
-            'textFontSize'    : 24,         // Set default font size for the segments.
-            'textOrientation' : 'vertical', // Make text vertial so goes down from the outside of wheel.
-            'textAlignment'   : 'outer',    // Align text to outside of wheel.
-            'numSegments'     : 17,         // Specify number of segments.
-            'segments'        :             // Define segments including colour and text.
-            [                               // font size and test colour overridden on backrupt segments.
-               {'fillStyle' : '#ee1c24', 'text' : '300'},
-               {'fillStyle' : '#3cb878', 'text' : '450'},
-               {'fillStyle' : '#f6989d', 'text' : '600'},
-               {'fillStyle' : '#00aef0', 'text' : '750'},
-               {'fillStyle' : '#f26522', 'text' : '500'},
-               {'fillStyle' : '#000000', 'text' : 'BANKRUPT', 'textFontSize' : 16, 'textFillStyle' : '#ffffff'},
-               {'fillStyle' : '#e70697', 'text' : '3000'},
-               {'fillStyle' : '#fff200', 'text' : '600'},
-               {'fillStyle' : '#f6989d', 'text' : '700'},
-               {'fillStyle' : '#f6989d', 'text' : '500'},
-               {'fillStyle' : '#f26522', 'text' : '400'},
-               {'fillStyle' : '#3cb878', 'text' : '900'},
-               {'fillStyle' : '#000000', 'text' : 'BANKRUPT', 'textFontSize' : 16, 'textFillStyle' : '#ffffff'},
-               {'fillStyle' : '#a186be', 'text' : '600'},
-               {'fillStyle' : '#fff200', 'text' : '700'},
-               {'fillStyle' : '#00aef0', 'text' : '800'},
-               {'fillStyle' : '#ffffff', 'text' : 'LOOSE TURN', 'textFontSize' : 12}
-            ],
-            'animation' :           // Specify the animation to use.
+            'outerRadius': 212,        // Set outer radius so wheel fits inside the background.
+            'innerRadius': 75,         // Make wheel hollow so segments don't go all way to center.
+            'textFontSize': 24,         // Set default font size for the segments.
+            'textOrientation': 'vertical', // Make text vertial so goes down from the outside of wheel.
+            'textAlignment': 'outer',    // Align text to outside of wheel.
+            'numSegments': 12,         // Specify number of segments.
+            'segments':             // Define segments including colour and text.
+                [                               // font size and test colour overridden on backrupt segments.
+                    { 'fillStyle': '#ee1c24', 'text': '300' },
+                    { 'fillStyle': '#3cb878', 'text': '450' },
+                    { 'fillStyle': '#f6989d', 'text': '600' },
+                    { 'fillStyle': '#00aef0', 'text': '750' },
+                    { 'fillStyle': '#f26522', 'text': '500' },
+                    { 'fillStyle': '#f6989d', 'text': '500' },
+                    { 'fillStyle': '#f26522', 'text': '400' },
+                    { 'fillStyle': '#3cb878', 'text': '900' },
+                    { 'fillStyle': '#a186be', 'text': '600' },
+                    { 'fillStyle': '#fff200', 'text': '700' },
+                    { 'fillStyle': '#00aef0', 'text': '800' },
+                    { 'fillStyle': '#ffffff', 'text': 'LOOSE TURN', 'textFontSize': 12 }
+                ],
+            'animation':           // Specify the animation to use.
             {
-                'type'     : 'spinToStop',
-                'duration' : 10,    // Duration in seconds.
-                'spins'    : 3,     // Default number of complete spins.
-                // 'callbackFinished' : alertPrize,
-                'callbackSound'    : this.playSound,   // Function to call when the tick sound is to be triggered.
-                'soundTrigger'     : 'pin'             // Specify pins are to trigger the sound, the other option is 'segment'.
+                'type': 'spinToStop',
+                'duration': 10,    // Duration in seconds.
+                'spins': 3,     // Default number of complete spins.
+                'callbackFinished': this.alertPrize,
+                'callbackSound': this.playSound,   // Function to call when the tick sound is to be triggered.
+                'soundTrigger': 'pin'             // Specify pins are to trigger the sound, the other option is 'segment'.
             },
-            'pins' :				// Turn pins on.
+            'pins':				// Turn pins on.
             {
-                'number'     : 17,
-                'fillStyle'  : 'silver',
+                'number': 12,
+                'fillStyle': 'white',
                 'outerRadius': 4,
             }
         });
@@ -58,10 +52,9 @@ export default class WinwheelSpinner extends Component {
         this.setupWinWheel();
     }
 
-    startSpin()
-    {
+    startSpin() {
         // Vars used by the code in this page to do power controls.
-        let wheelPower    = 0;
+        let wheelPower = 0;
         let wheelSpinning = false;
 
         let theWheel = this.setupWinWheel();
@@ -92,51 +85,55 @@ export default class WinwheelSpinner extends Component {
     }
 
     // This function is called when the sound is to be played.
-    playSound = () =>
-    {
+    playSound = () => {
         // Loads the tick audio sound in to an audio object.
         let audio = new Audio('tick.mp3');
+
         // Stop and rewind the sound if it already happens to be playing.
         audio.pause();
         audio.currentTime = 0;
 
-        // Play the sound.
         audio.play();
     }
 
-  render() {
-    const style = 
-    {
-        'background-image': 'url(./wheel_back.png)',
-        'background-position': 'center',
-        'background-repeat': 'none',
-        'background-repeat-x': 'no-repeat',
-        'padding-top': '6px'
-    }   
+    alertPrize = (indicatedSegment) => {
+        // Display different message if win/lose/backrupt.
+        if (indicatedSegment.text === 'LOOSE TURN') {
+            alert('Sorry but you loose a turn.');
+        } else {
+            alert("You have won " + indicatedSegment.text);
+        }
+    }
 
-    return (
-        <>
-            <Row>
-                <Col>
-                    <div class="text-center">
-                        <img class="rounded" id="spin_button" src="spin_off.png" alt="Spin" onClick={() => this.startSpin()} />
+    render() {
+        const customStyle =
+        {
+            'backgroundImage': 'url(./wheel_back.png)',
+            'backgroundPosition': 'center',
+            'backgroundRepeat': 'none',
+            'backgroundRepeatX': 'no-repeat',
+            'paddingTop': '6px'
+        }
+
+        return (
+            <>
+                <div>
+                    <div>
+                        <div>
+                            <a className="button" onClick={() => this.startSpin()}>SPIN</a>
+                            {/* <img className="rounded" id="spin_button" src="spin_off.png" alt="Spin" onClick={() => this.startSpin()} /> */}
+                        </div>
+                        <i class="arrow down"></i>
                     </div>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <table>
-                        <tr>
-                            <td style={style}>
-                                <canvas id='canvas' width='880' height='500'>
-                                    Canvas not supported, use another browser.
-                                </canvas>
-                            </td>
-                        </tr>
-                    </table>
-                </Col>
-            </Row>
-        </>
-    )
-  }
+
+                    <canvas id='canvas' width='500' height='500'>
+                        Canvas not supported, use another browser.
+                            </canvas>
+                </div>
+                <div>
+
+                </div>
+            </>
+        )
+    }
 }

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 export default class ContactForm extends Component {
   render() {
     return (
-      <>
-        <Form>
+      <div className="contact">
+        <form className="form">
             <Form.Group>
                 <Form.Control type="text" placeholder="First Name" />
             </Form.Group>
@@ -17,8 +17,8 @@ export default class ContactForm extends Component {
             <Form.Group>
                 <Form.Control type="text" placeholder="Email" />
             </Form.Group>
-        </Form>      
-      </>
+        </form>
+      </div>
     )
   }
 }
