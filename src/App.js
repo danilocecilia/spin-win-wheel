@@ -1,25 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Container, Col, Row } from 'react-bootstrap';
+import WinwheelSpinner from './component/WinwheelSpinner';
+import ContactForm from './component/ContactForm';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Row className="justify-content-md-center">
+        <Col className="col-lg-6">
+          <ContactForm/>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <WinwheelSpinner />
+        </Col>
+      </Row>
+      
+    </Container>
   );
 }
 
