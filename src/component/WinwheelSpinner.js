@@ -1,18 +1,15 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react'
 import MyModal from './Modal';
+
 export default class WinwheelSpinner extends Component {
     constructor(...args) {
         super(...args);
 
-        this.state = { modalShow: true };
+        this.state = { modalShow: false };
+
+        this.setupWinWheel();
     }
-
-
-    shouldComponentUpdate() {
-        return false;
-    }
-
 
     setupWinWheel = () => {
         return new Winwheel({
@@ -40,8 +37,8 @@ export default class WinwheelSpinner extends Component {
             'animation':           // Specify the animation to use.
             {
                 'type': 'spinToStop',
-                'duration': 10,    // Duration in seconds.
-                'spins': 3,     // Default number of complete spins.
+                'duration': 2,    // Duration in seconds.
+                'spins': 1,     // Default number of complete spins.
                 'callbackFinished': this.alertPrize,
                 'callbackSound': this.playSound,   // Function to call when the tick sound is to be triggered.
                 'soundTrigger': 'pin'             // Specify pins are to trigger the sound, the other option is 'segment'.
@@ -104,27 +101,31 @@ export default class WinwheelSpinner extends Component {
     }
 
     alertPrize = (indicatedSegment) => {
-        // // Display different message if win/lose/backrupt.
+        // Display different message if win/lose/backrupt.
         // if (indicatedSegment.text === 'LOOSE TURN') {
         //     alert('Sorry but you loose a turn.');
         // } else {
         //     alert("You have won " + indicatedSegment.text);
         // }
+
+        
         this.setState({ modalShow: true })
+        console.log(this.state.modalShow);
+        console.log('prize:', indicatedSegment.text);
     }
 
     render() {
         let modalClose = () => this.setState({ modalShow: true });
-
-        const customStyle =
-        {
-            'backgroundImage': 'url(./wheel_back.png)',
-            'backgroundPosition': 'center',
-            'backgroundRepeat': 'none',
-            'backgroundRepeatX': 'no-repeat',
-            'paddingTop': '6px'
-        }
-
+        console.log('render again');
+        // const customStyle =
+        // {
+        //     'backgroundImage': 'url(./wheel_back.png)',
+        //     'backgroundPosition': 'center',
+        //     'backgroundRepeat': 'none',
+        //     'backgroundRepeatX': 'no-repeat',
+        //     'paddingTop': '6px'
+        // }
+        console.log(this.state.modalShow);
         return (
             <>
                 <div>

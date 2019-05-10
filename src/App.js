@@ -9,7 +9,7 @@ function App() {
     <div className="wrapper">
       <div></div>
       <div className="container">
-        <span class="header">Spin the weel to win the prize!</span>
+        <span className="header">Spin the weel to win the prize!</span>
         <ContactForm />
         <WinwheelSpinner />
       </div>
