@@ -1,7 +1,14 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react'
-
+import MyModal from './Modal';
 export default class WinwheelSpinner extends Component {
+    constructor(...args) {
+        super(...args);
+
+        this.state = { modalShow: true };
+    }
+
+
     shouldComponentUpdate() {
         return false;
     }
@@ -97,15 +104,18 @@ export default class WinwheelSpinner extends Component {
     }
 
     alertPrize = (indicatedSegment) => {
-        // Display different message if win/lose/backrupt.
-        if (indicatedSegment.text === 'LOOSE TURN') {
-            alert('Sorry but you loose a turn.');
-        } else {
-            alert("You have won " + indicatedSegment.text);
-        }
+        // // Display different message if win/lose/backrupt.
+        // if (indicatedSegment.text === 'LOOSE TURN') {
+        //     alert('Sorry but you loose a turn.');
+        // } else {
+        //     alert("You have won " + indicatedSegment.text);
+        // }
+        this.setState({ modalShow: true })
     }
 
     render() {
+        let modalClose = () => this.setState({ modalShow: true });
+
         const customStyle =
         {
             'backgroundImage': 'url(./wheel_back.png)',
@@ -119,20 +129,16 @@ export default class WinwheelSpinner extends Component {
             <>
                 <div>
                     <div>
-                        <div>
-                            <a className="button" onClick={() => this.startSpin()}>SPIN</a>
-                            {/* <img className="rounded" id="spin_button" src="spin_off.png" alt="Spin" onClick={() => this.startSpin()} /> */}
-                        </div>
-                        <i class="arrow down"></i>
+                        <a className="button" onClick={() => this.startSpin()}>SPIN</a>
+                        {/* <img className="rounded" id="spin_button" src="spin_off.png" alt="Spin" onClick={() => this.startSpin()} /> */}
                     </div>
+                    <i className="arrow down"></i>
+                </div>
 
-                    <canvas id='canvas' width='500' height='500'>
-                        Canvas not supported, use another browser.
+                <canvas id='canvas' width='500' height='500'>
+                    Canvas not supported, use another browser.
                             </canvas>
-                </div>
-                <div>
-
-                </div>
+                <MyModal show={this.state.modalShow} onHide={modalClose}/>
             </>
         )
     }
