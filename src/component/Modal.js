@@ -1,31 +1,32 @@
 import React, { Component } from 'react'
 import { Modal, Button } from 'react-bootstrap';
-
+// import ContactForm from "./ContactForm";
+// import VerticalLinearStepper from "./Stepper";
 export default class MyModal extends Component {
   render() {
     return (
       <Modal
         {...this.props}
-        size="lg"
+        size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton={this.props.hideXButton}>
           <Modal.Title id="contained-modal-title-vcenter">
-            Modal heading
-              </Modal.Title>
+            {this.props.title}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>Centered Modal</h4>
-          <p>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-              </p>
+          <h5>{this.props.description}</h5>
+          {this.props.content}
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={this.props.onHide}>Close</Button>
-        </Modal.Footer>
+        { 
+          this.props.showCloseButton ?
+          <Modal.Footer>
+            <Button onClick={this.props.onHide}>Close</Button>
+          </Modal.Footer>
+          : ''
+        }
       </Modal>
     );
   }

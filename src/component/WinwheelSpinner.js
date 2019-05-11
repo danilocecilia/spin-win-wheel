@@ -1,15 +1,18 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react'
 import MyModal from './Modal';
+import VerticalLinearStepper from "./Stepper";
 
 export default class WinwheelSpinner extends Component {
     constructor(...args) {
         super(...args);
 
-        this.state = { modalShow: false };
-
-        this.setupWinWheel();
+        this.state = { modalShow: false, prize: '', startSpin: this.props.startSpin };
     }
+
+    // shouldComponentUpdate() {
+    //     return false;
+    // }
 
     setupWinWheel = () => {
         return new Winwheel({
@@ -52,8 +55,15 @@ export default class WinwheelSpinner extends Component {
         });
     }
 
+
     componentDidMount() {
         this.setupWinWheel();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        // if(prevProps.startSpin == prevState.startSpin) {
+        //     this.setState({startSpin: true});
+        // }
     }
 
     startSpin() {
@@ -88,7 +98,6 @@ export default class WinwheelSpinner extends Component {
         }
     }
 
-    // This function is called when the sound is to be played.
     playSound = () => {
         // Loads the tick audio sound in to an audio object.
         let audio = new Audio('tick.mp3');
@@ -101,22 +110,20 @@ export default class WinwheelSpinner extends Component {
     }
 
     alertPrize = (indicatedSegment) => {
-        // Display different message if win/lose/backrupt.
-        // if (indicatedSegment.text === 'LOOSE TURN') {
-        //     alert('Sorry but you loose a turn.');
-        // } else {
-        //     alert("You have won " + indicatedSegment.text);
-        // }
-
-        
-        this.setState({ modalShow: true })
-        console.log(this.state.modalShow);
-        console.log('prize:', indicatedSegment.text);
+        this.setState({ modalShow: true, prize: indicatedSegment.text })
+        console.log('Modal State:', this.state.modalShow);
+        console.log('Prize:', indicatedSegment.text);
     }
 
     render() {
-        let modalClose = () => this.setState({ modalShow: true });
-        console.log('render again');
+        const renderStepper = () => <VerticalLinearStepper />;
+
+        let modalClose = () => this.setState({ modalShow: false });
+        console.log('Prop startSpin is: ', this.props.startSpin);
+
+        if (this.state.startSpin) {
+            this.startSpin();
+        }
         // const customStyle =
         // {
         //     'backgroundImage': 'url(./wheel_back.png)',
@@ -125,21 +132,26 @@ export default class WinwheelSpinner extends Component {
         //     'backgroundRepeatX': 'no-repeat',
         //     'paddingTop': '6px'
         // }
-        console.log(this.state.modalShow);
+
         return (
             <>
                 <div>
                     <div>
                         <a className="button" onClick={() => this.startSpin()}>SPIN</a>
-                        {/* <img className="rounded" id="spin_button" src="spin_off.png" alt="Spin" onClick={() => this.startSpin()} /> */}
                     </div>
                     <i className="arrow down"></i>
                 </div>
 
                 <canvas id='canvas' width='500' height='500'>
                     Canvas not supported, use another browser.
-                            </canvas>
-                <MyModal show={this.state.modalShow} onHide={modalClose}/>
+                </canvas>
+                <MyModal
+                    show={this.state.modalShow}
+                    title={"Congratulations, you won " + this.state.prize}
+                    description={"Please, fill out these two steps to get your prize."}
+                    onHide={modalClose}
+                    content={renderStepper()} 
+                    showCloseButton={false}/>
             </>
         )
     }
