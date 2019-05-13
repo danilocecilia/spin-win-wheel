@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Modal, Button } from 'react-bootstrap';
-// import ContactForm from "./ContactForm";
-// import VerticalLinearStepper from "./Stepper";
+
 export default class MyModal extends Component {
   render() {
     return (

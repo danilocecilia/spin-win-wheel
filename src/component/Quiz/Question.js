@@ -56,7 +56,7 @@ class Question extends Component {
         correctAnswer: true,
         incorrectAnswer: false,
         correct: correct,
-        showNextQuestionButton: true,
+        showNextQuestionButton: false,
       })
     } else {
       if( correct.indexOf(currentQuestionIndex) < 0 && incorrect.indexOf(currentQuestionIndex) < 0 ) {
@@ -99,7 +99,7 @@ class Question extends Component {
         })
 
         this.setState({
-          showNextQuestionButton: true,
+          showNextQuestionButton: false,
         })
       }
 
@@ -244,7 +244,7 @@ class Question extends Component {
               }
             </div>
             {/* <div>Question {this.state.currentQuestionIndex + 1}:</div> */}
-            <h4>{question.question}</h4>
+            <h5>{question.question}</h5>
             {
               question.answers.map( (answer, index) => {
                 if(this.state.buttons[index] != undefined) {
@@ -278,8 +278,7 @@ class Question extends Component {
         }
 
         {
-          this.state.endQuiz && this.state.onComplete != undefined &&
-             this.state.onComplete(questionSummary)
+          this.state.endQuiz && this.state.onComplete != undefined && this.state.onComplete(questionSummary)
         }
 
         {

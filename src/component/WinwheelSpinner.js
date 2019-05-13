@@ -3,11 +3,16 @@ import React, { Component } from 'react'
 import MyModal from './Modal';
 import VerticalLinearStepper from "./Stepper";
 
+
 export default class WinwheelSpinner extends Component {
     constructor(...args) {
         super(...args);
 
-        this.state = { modalShow: false, prize: '', startSpin: this.props.startSpin };
+        this.state = { 
+            modalShow: false, 
+            prize: '', 
+            startSpin: this.props.startSpin,
+         };
     }
 
     // shouldComponentUpdate() {
@@ -15,27 +20,28 @@ export default class WinwheelSpinner extends Component {
     // }
 
     setupWinWheel = () => {
-        return new Winwheel({
+        var theWheel = new Winwheel({
             'outerRadius': 212,        // Set outer radius so wheel fits inside the background.
             'innerRadius': 75,         // Make wheel hollow so segments don't go all way to center.
             'textFontSize': 24,         // Set default font size for the segments.
+            'drawMode': 'text',
             'textOrientation': 'vertical', // Make text vertial so goes down from the outside of wheel.
             'textAlignment': 'outer',    // Align text to outside of wheel.
-            'numSegments': 12,         // Specify number of segments.
-            'segments':             // Define segments including colour and text.
+            'numSegments': 12,          // Specify number of segments.
+            'segments':                 // Define segments including colour and text.
                 [                               // font size and test colour overridden on backrupt segments.
-                    { 'fillStyle': '#ee1c24', 'text': '300' },
-                    { 'fillStyle': '#3cb878', 'text': '450' },
-                    { 'fillStyle': '#f6989d', 'text': '600' },
-                    { 'fillStyle': '#00aef0', 'text': '750' },
-                    { 'fillStyle': '#f26522', 'text': '500' },
-                    { 'fillStyle': '#f6989d', 'text': '500' },
-                    { 'fillStyle': '#f26522', 'text': '400' },
-                    { 'fillStyle': '#3cb878', 'text': '900' },
-                    { 'fillStyle': '#a186be', 'text': '600' },
-                    { 'fillStyle': '#fff200', 'text': '700' },
-                    { 'fillStyle': '#00aef0', 'text': '800' },
-                    { 'fillStyle': '#ffffff', 'text': 'LOOSE TURN', 'textFontSize': 12 }
+                    { 'fillStyle': '#fc89ad', 'text': '300' },
+                    { 'fillStyle': '#d98fe2', 'text': '450' },
+                    { 'fillStyle': '#9161d9', 'text': '600' },
+                    { 'fillStyle': '#0096f9', 'text': '750' },
+                    { 'fillStyle': '#87cafe', 'text': '500' },
+                    { 'fillStyle': '#a3ff92', 'text': '500' },
+                    { 'fillStyle': '#fc89ad', 'text': '400' },
+                    { 'fillStyle': '#d98fe2', 'text': '900' },
+                    { 'fillStyle': '#9161d9', 'text': '600' },
+                    { 'fillStyle': '#0096f9', 'text': '700' },
+                    { 'fillStyle': '#87cafe', 'text': '800' },
+                    { 'fillStyle': '#a3ff92', 'text': '360', 'textFontSize': 12 }
                 ],
             'animation':           // Specify the animation to use.
             {
@@ -53,17 +59,25 @@ export default class WinwheelSpinner extends Component {
                 'outerRadius': 4,
             }
         });
+        
+        // // Create new image object in memory.
+        // let loadedImg = new Image();
+
+        // // Create callback to execute once the image has finished loading.
+        // loadedImg.onload = function () {
+        //     theWheel.wheelImage = loadedImg;    // Make wheelImage equal the loaded image object.
+        //     theWheel.draw();                    // Also call draw function to render the wheel.
+        // }
+
+        // // Set the image source, once complete this will trigger the onLoad callback (above).
+        // loadedImg.src = "wheel.png";
+
+        return theWheel;
     }
 
 
     componentDidMount() {
         this.setupWinWheel();
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        // if(prevProps.startSpin == prevState.startSpin) {
-        //     this.setState({startSpin: true});
-        // }
     }
 
     startSpin() {
@@ -87,7 +101,7 @@ export default class WinwheelSpinner extends Component {
 
             // // Disable the spin button so can't click again while wheel is spinning.
             // document.getElementById('spin_button').src       = "spin_off.png";
-            // document.getElementById('spin_button').className = "";
+            // document.getElementById('btnSpinWheel').className = "button disabled";
 
             // Begin the spin animation by calling startAnimation on the wheel object.
             theWheel.startAnimation();
@@ -110,7 +124,8 @@ export default class WinwheelSpinner extends Component {
     }
 
     alertPrize = (indicatedSegment) => {
-        this.setState({ modalShow: true, prize: indicatedSegment.text })
+        this.setState({ modalShow: true, prize: indicatedSegment.text });
+        
         console.log('Modal State:', this.state.modalShow);
         console.log('Prize:', indicatedSegment.text);
     }
@@ -124,6 +139,7 @@ export default class WinwheelSpinner extends Component {
         if (this.state.startSpin) {
             this.startSpin();
         }
+
         // const customStyle =
         // {
         //     'backgroundImage': 'url(./wheel_back.png)',
@@ -137,7 +153,7 @@ export default class WinwheelSpinner extends Component {
             <>
                 <div>
                     <div>
-                        <a className="button" onClick={() => this.startSpin()}>SPIN</a>
+                        <a id="btnSpinWheel" className={"button " + (this.props.disableButton ? "disabled" : "")} onClick={() => this.startSpin()}>SPIN</a>
                     </div>
                     <i className="arrow down"></i>
                 </div>
@@ -150,8 +166,8 @@ export default class WinwheelSpinner extends Component {
                     title={"Congratulations, you won " + this.state.prize}
                     description={"Please, fill out these two steps to get your prize."}
                     onHide={modalClose}
-                    content={renderStepper()} 
-                    showCloseButton={false}/>
+                    content={renderStepper()}
+                    showCloseButton={false} />
             </>
         )
     }

@@ -6,10 +6,16 @@ import MyModal from './component/Modal';
 
 function App() {
   const [modal, setModalShow] = useState({modalShow: true});
+  const [btn, setBtnStatus] = useState({disabled: false});
 
   const handleClick = (hasEnoughAge) => {
-    setModalShow({modalShow: !hasEnoughAge});
-
+    if(hasEnoughAge)
+      setModalShow({modalShow: !hasEnoughAge});
+    else {
+      setModalShow({modalShow: false});
+      setBtnStatus({disabled: true});
+    }
+    
     console.log('modalShow: ', modal);
     console.log('User is 19+ years old: ' + hasEnoughAge);
   }
@@ -25,11 +31,11 @@ function App() {
         <span className="header">Spin the weel to win the prize!</span>
         <MyModal
           hideXButton={false}
-          show={modal.modalShow} 
+          show={modal.modalShow}
           title={'You must be at least 19 years old to participate.'} 
           content={renderAgeVerification()}
           showCloseButton={false}/>
-        <WinwheelSpinner />
+        <WinwheelSpinner disableButton={btn.disabled}/>
       </div>
       <div></div>
     </div>

@@ -16,7 +16,7 @@ export default class MyQuiz extends Component {
             ],
             "correctAnswer": "2",
             "messageForCorrectAnswer": "Correct answer. Good job.",
-            "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
+            "messageForIncorrectAnswer": "Oh no, the correct answer should be blabla...",
             "explanation": "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
           },
         ]
@@ -24,7 +24,7 @@ export default class MyQuiz extends Component {
 
   render() {
     return (
-        <Quiz quiz={this.quiz}/>
+        <Quiz quiz={this.quiz} showInstantFeedback={true}/>
     )
   }
 }
