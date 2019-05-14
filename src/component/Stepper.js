@@ -6,7 +6,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 import { Button } from 'react-bootstrap';
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import ContactForm from "./ContactForm";
@@ -32,48 +32,50 @@ function getSteps() {
   return ['Answer Quiz', 'General Info'];
 }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <MyQuiz/>;
-    case 1:
-      return <ContactForm/>;
-    default:
-      return 'Unknown step';
-  }
-}
-
 class VerticalLinearStepper extends React.Component {
   state = {
     activeStep: 0,
+    submitFromOutside: false
   };
 
   handleNext = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep + 1,
-    }));
+    console.log('activeStep: ', this.state.activeStep);
+    if(this.state.activeStep === 1) {
+      this.setState({submitFromOutside: true});
+    }
+    else {
+      this.setState(state => ({
+        activeStep: this.state.activeStep + 1,
+      }));
+    }
   };
 
   handleBack = () => {
     this.setState(state => ({
       activeStep: state.activeStep - 1,
+      submitFromOutside: false
     }));
   };
 
-  handleReset = () => {
-    this.setState({
-      activeStep: 0,
-    });
-  };
+  getStepContent = (step, obj) => {
+    switch (step) {
+      case 0:
+        return <MyQuiz />;
+      case 1:
+        return <ContactForm submitFromOutside={this.state.submitFromOutside}/>;
+      default:
+        return 'Unknown step';
+    }
+  }
 
   render() {
     const { classes } = this.props;
     const steps = getSteps();
     const { activeStep } = this.state;
 
-    const style = {
-      backgroundColor: '#BFA65B'
-    }
+    // const style = {
+    //   backgroundColor: '#BFA65B'
+    // }
 
     return (
       <div className={classes.root}>
@@ -82,7 +84,7 @@ class VerticalLinearStepper extends React.Component {
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
               <StepContent>
-                <Typography>{getStepContent(index)}</Typography>
+                <Typography>{this.getStepContent(index, this)}</Typography>
                 <div className={classes.actionsContainer}>
                   <div>
                     <Button 
@@ -93,7 +95,6 @@ class VerticalLinearStepper extends React.Component {
                        Back</Button>
 
                     <Button
-                      variant="contained"
                       color="primary"
                       onClick={this.handleNext}
                       className={classes.button}
@@ -107,11 +108,11 @@ class VerticalLinearStepper extends React.Component {
             </Step>
           ))}
         </Stepper>
-        {activeStep === steps.length && (
+        {/* {activeStep === steps.length && (
           <Paper square elevation={0} className={classes.resetContainer}>
             <Typography>Thank you for participating, conact you staff to get your prize.</Typography>
           </Paper>
-        )}
+        )} */}
       </div>
     );
   }

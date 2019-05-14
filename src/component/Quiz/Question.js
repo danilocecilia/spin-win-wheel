@@ -15,16 +15,16 @@ class Question extends Component {
       correct: [],
       incorrect: [],
       filteredValue: 'all',
-      showDefaultResult: this.props.showDefaultResult != undefined ? this.props.showDefaultResult : true,
-      onComplete: this.props.onComplete != undefined ? this.props.onComplete : null,
-      customResultPage: this.props.customResultPage != undefined ? this.props.customResultPage : null,
-      showInstantFeedback: this.props.showInstantFeedback != undefined ? this.props.showInstantFeedback : false,
-      continueTillCorrect: this.props.continueTillCorrect != undefined ? this.props.continueTillCorrect : false
+      showDefaultResult: this.props.showDefaultResult !== undefined ? this.props.showDefaultResult : true,
+      onComplete: this.props.onComplete !== undefined ? this.props.onComplete : null,
+      customResultPage: this.props.customResultPage !== undefined ? this.props.customResultPage : null,
+      showInstantFeedback: this.props.showInstantFeedback !== undefined ? this.props.showInstantFeedback : false,
+      continueTillCorrect: this.props.continueTillCorrect !== undefined ? this.props.continueTillCorrect : false
     };
   }
 
   checkAnswer = (index, correctAnswer) => {
-    const { correct, incorrect, currentQuestionIndex, showInstantFeedback, continueTillCorrect } = this.state;
+    const { correct, incorrect, currentQuestionIndex, continueTillCorrect } = this.state;
 
     if(index == correctAnswer) {
       if( incorrect.indexOf(currentQuestionIndex) < 0 && correct.indexOf(currentQuestionIndex) < 0) {
@@ -121,7 +121,7 @@ class Question extends Component {
       buttons: {},
     }
 
-    if(currentQuestionIndex + 1 == questions.length) {
+    if(currentQuestionIndex + 1 === questions.length) {
       this.setState({
         ...initState,
         endQuiz: true
@@ -186,9 +186,9 @@ class Question extends Component {
     const { filteredValue } = this.state;
     let questions = this.props.questions;
 
-    if(filteredValue != 'all') {
+    if(filteredValue !== 'all') {
       questions = questions.filter( (question, index) => {
-        return this.state[filteredValue].indexOf(index) != -1
+        return this.state[filteredValue].indexOf(index) !== -1
       })
     }
 
@@ -203,9 +203,9 @@ class Question extends Component {
               question.answers.map( (answer, index) => {
                 return(
                   <div>
-                     <button disabled={true} className={"answerBtn btn" + (index+1 == question.correctAnswer ? ' correct': '')}>
-                      { question.questionType == 'text' && <span>{ answer }</span> }
-                      { question.questionType == 'photo' && <img src={ answer } /> }
+                     <button disabled={true} className={"answerBtn btn" + (index+1 === question.correctAnswer ? ' correct': '')}>
+                      { question.questionType === 'text' && <span>{ answer }</span> }
+                      { question.questionType === 'photo' && <img src={ answer } alt="img" /> }
                     </button>
                   </div>
                 )
@@ -247,18 +247,18 @@ class Question extends Component {
             <h5>{question.question}</h5>
             {
               question.answers.map( (answer, index) => {
-                if(this.state.buttons[index] != undefined) {
+                if(this.state.buttons[index] !== undefined) {
                   return (
                     <button key={index} disabled={ this.state.buttons[index].disabled || false } className={`${this.state.buttons[index].className} answerBtn btn`}  onClick={() => this.checkAnswer(index+1, question.correctAnswer)}>
-                      { question.questionType == 'text' && <span>{answer}</span> }
-                      { question.questionType == 'photo' && <img src={answer} /> }
+                      { question.questionType === 'text' && <span>{answer}</span> }
+                      { question.questionType === 'photo' && <img src={answer} alt="img" /> }
                     </button>
                   )
                 } else {
                   return (
                     <button key={index} onClick={() => this.checkAnswer(index+1, question.correctAnswer)} className="answerBtn btn">
-                    { question.questionType == 'text' && answer }
-                    { question.questionType == 'photo' && <img src={answer}/> }
+                    { question.questionType === 'text' && answer }
+                    { question.questionType === 'photo' && <img src={answer} alt="img"/> }
                     </button>
                   )
                 }
@@ -269,7 +269,7 @@ class Question extends Component {
             }
           </div>
         }
-        {this.state.endQuiz && this.state.showDefaultResult && this.state.customResultPage == null &&
+        {this.state.endQuiz && this.state.showDefaultResult && this.state.customResultPage === null &&
             <div className="card-body">
             <h2>You have completed the quiz. You got {this.state.correct.length} out of {questions.length} questions. <br/></h2>
               { this.renderQuizResultFilter() }
@@ -278,11 +278,11 @@ class Question extends Component {
         }
 
         {
-          this.state.endQuiz && this.state.onComplete != undefined && this.state.onComplete(questionSummary)
+          this.state.endQuiz && this.state.onComplete !== undefined && this.state.onComplete(questionSummary)
         }
 
         {
-          this.state.endQuiz && !this.state.showDefaultResult  && this.state.customResultPage != undefined &&
+          this.state.endQuiz && !this.state.showDefaultResult  && this.state.customResultPage !== undefined &&
              this.state.customResultPage(questionSummary)
         }
         </div>

@@ -153,7 +153,7 @@ export default class WinwheelSpinner extends Component {
             <>
                 <div>
                     <div>
-                        <a id="btnSpinWheel" className={"button " + (this.props.disableButton ? "disabled" : "")} onClick={() => this.startSpin()}>SPIN</a>
+                        <a id="btnSpinWheel" href="#" className={"button " + (this.props.disableButton ? "disabled" : "")} onClick={() => this.startSpin()}>SPIN</a>
                     </div>
                     <i className="arrow down"></i>
                 </div>
