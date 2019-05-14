@@ -1,24 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import { Container, Col, Row } from 'react-bootstrap';
 import WinwheelSpinner from './component/WinwheelSpinner';
-import ContactForm from './component/ContactForm';
+import AgeVerification from "./component/AgeVerification";
+import MyModal from './component/Modal';
 
 function App() {
+  const [modal, setModalShow] = useState({modalShow: true});
+  const [btn, setBtnStatus] = useState({disabled: false});
+
+  const handleClick = (hasEnoughAge) => {
+    if(hasEnoughAge)
+      setModalShow({modalShow: !hasEnoughAge});
+    else {
+      setModalShow({modalShow: false});
+      setBtnStatus({disabled: true});
+    }
+    
+    console.log('modalShow: ', modal);
+    console.log('User is 19+ years old: ' + hasEnoughAge);
+  }
+
+  const renderAgeVerification = () => {
+      return <AgeVerification handleClick={(hasEnoughAge) => handleClick(hasEnoughAge)}/>
+  }
+
   return (
-    <Container>
-      <Row className="justify-content-md-center">
-        <Col className="col-lg-6">
-          <ContactForm/>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <WinwheelSpinner />
-        </Col>
-      </Row>
-      
-    </Container>
+    <div className="wrapper">
+      <div></div>
+      <div className="container">
+        <span className="header">Spin the weel to win the prize!</span>
+        <MyModal
+          hideXButton={false}
+          show={modal.modalShow}
+          title={'You must be at least 19 years old to participate.'} 
+          content={renderAgeVerification()}
+          showCloseButton={false}/>
+        <WinwheelSpinner disableButton={btn.disabled}/>
+      </div>
+      <div></div>
+    </div>
   );
 }
 
